@@ -1,6 +1,6 @@
 import { setEngine } from "./app/getEngine";
 import { MainScreen } from "./app/screens/main/MainScreen";
-import { CreationEngine } from "./engine/engine";
+import { CreationEngine } from "./engine/engine.ts";
 
 /**
  * Importing these modules will automatically register there plugins with the engine.
