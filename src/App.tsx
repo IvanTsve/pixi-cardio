@@ -17,6 +17,8 @@ extend({
 
 export default function App() {
   const [textures, setTextures] = useState([]);
+  const [spinning, setSpinning] = useState(false);
+
   useEffect(() => {
     Assets.load([one, two, three, four, five, six]).then((textures) => {
       setTextures([Object.values(textures)[0], Object.values(textures)[1], Object.values(textures)[2], Object.values(textures)[3], Object.values(textures)[4], Object.values(textures)[5]]);
@@ -41,9 +43,7 @@ export default function App() {
         eventMode="static"
         cursor="pointer"
         style={{ fontSize: 24, fontWeight: 'bold', fill: '#fff' }}
-        onClick={() => {
-          console.log('clicked');
-        }}
+        onClick={handleSpinClick}
       />
     </Application>
   );
