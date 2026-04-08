@@ -25,6 +25,15 @@ export default function App() {
     });
 
   }, []);
+  function handleSpinClick() {
+    if (spinning) {
+      return;
+    }
+    setSpinning(true);
+    setTimeout(() => {
+      setSpinning(false);
+    }, 5000);
+  }
   return (
     <Application width={800} height={600} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
       <pixiContainer
@@ -33,7 +42,7 @@ export default function App() {
       >
         {
           Array.from({ length: 1 }).map((_, index) => (
-            <SlotReel key={index} textures={textures} posX={150 * index} />
+            <SlotReel key={index} textures={textures} posX={150 * index} spinning={spinning} />
           ))
         }
       </pixiContainer>
