@@ -17,7 +17,7 @@ extend({
 
 export default function App() {
   const [textures, setTextures] = useState([]);
-  const [spinning, setSpinning] = useState(false);
+  const [reelSpinning, setReelSpinning] = useState([false, false, false]);
 
   useEffect(() => {
     Assets.load([one, two, three, four, five, six]).then((textures) => {
@@ -26,13 +26,15 @@ export default function App() {
 
   }, []);
   function handleSpinClick() {
-    if (spinning) {
+    if (reelSpinning.some(Boolean)) {
       return;
     }
-    setSpinning(true);
-    setTimeout(() => {
-      setSpinning(false);
-    }, 5000);
+
+    setReelSpinning(prev => [true, true, true]);
+    setTimeout(() => setReelSpinning(prev => [false, prev[1], prev[2]]), 1500);
+    setTimeout(() => setReelSpinning(prev => [prev[0], false, prev[2]]), 1900);
+    setTimeout(() => setReelSpinning(prev => [prev[0], prev[1], false]), 2300);
+
   }
   return (
     <Application width={800} height={600} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
@@ -41,8 +43,8 @@ export default function App() {
         scale={1.5}
       >
         {
-          Array.from({ length: 1 }).map((_, index) => (
-            <SlotReel key={index} textures={textures} posX={150 * index} spinning={spinning} />
+          Array.from({ length: 3 }).map((_, index) => (
+            <SlotReel key={index} textures={textures} posX={index * 120} spinning={reelSpinning[index]} />
           ))
         }
       </pixiContainer>

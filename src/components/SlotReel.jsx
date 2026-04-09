@@ -80,7 +80,7 @@ export default function SlotReel({ textures, posX, spinning }) {
                     g.fill({ color: 0xffffff, alpha: 1 });
                 }}
             />
-            <pixiContainer ref={symbolsRef} position={{ x: posX, y: 0 }}>
+            <pixiContainer ref={symbolsRef} osition={{ x: posX, y: 0 }}  >
                 {Array.from({ length: TOTAL_ROWS }).map((_, index) => (
                     <SlotSymbol
                         key={index}
