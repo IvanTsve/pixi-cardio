@@ -42,6 +42,8 @@ export default function SlotReel({ textures, posX, spinning }) {
                 symbolsRef.current.y = offsetRef.current;
 
                 const children = symbolsRef.current.children;
+                console.log(children, 'children');
+                
                 if (children.length > 0) {
                     const first = children[0];
                     symbolsRef.current.removeChild(first);
@@ -80,7 +82,7 @@ export default function SlotReel({ textures, posX, spinning }) {
                     g.fill({ color: 0xffffff, alpha: 1 });
                 }}
             />
-            <pixiContainer ref={symbolsRef} osition={{ x: posX, y: 0 }}  >
+            <pixiContainer ref={symbolsRef}   >
                 {Array.from({ length: TOTAL_ROWS }).map((_, index) => (
                     <SlotSymbol
                         key={index}
