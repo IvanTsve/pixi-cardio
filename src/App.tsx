@@ -3,7 +3,7 @@ import { useState } from 'react'
 import IndexTable from './components/table/IndexTable'
 
 export default function App() {
-    const [index, setIndex] = useState('slot')
+    const [index, setIndex] = useState('table')
     function change(val) {
         setIndex(val)
     }

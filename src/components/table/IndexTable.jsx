@@ -1,9 +1,18 @@
+import {
+    Application,
+} from '@pixi/react';
 
+import { MageCard } from './MageCard'
 
 export default function IndexTable() {
     return(
-        <div>
-            <h1>Table</h1>
-        </div>
+    <Application
+        backgroundColor="gray"
+        width={800}
+        height={600}
+        defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#fff' }}
+    >
+        <MageCard />
+     </Application>
     )
 }
