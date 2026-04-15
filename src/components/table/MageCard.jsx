@@ -9,13 +9,22 @@ extend({
 });
 const SPEED = 5;
 const keyActions = {
-  w: { dx: 0, dy: -SPEED },
-  s: { dx: 0, dy: SPEED },
-  a: { dx: -SPEED, dy: 0 },
-  d: { dx: SPEED, dy: 0 },
+  w: { dx: 0, dy: -SPEED, scaleX: 1 },
+  s: { dx: 0, dy: SPEED, scaleX: 1 },
+  a: { dx: -SPEED, dy: 0, scaleX: -1 },
+  d: { dx: SPEED, dy: 0, scaleX: 1 },
+};
+const AttackKeyActions = {
+  f: { dx: 0, dy: 0, scaleX: 1 },
 };
 const runFramePaths = Object.values(
   import.meta.glob("../../assets/Mage/Run/*.png", {
+    eager: true,
+    import: "default",
+  }),
+);
+const attackFramePaths = Object.values(
+  import.meta.glob("../../assets/Mage/Attack/*.png", {
     eager: true,
     import: "default",
   }),
@@ -28,6 +37,8 @@ export function MageCard() {
   const spriteRef = useRef(null);
   const [texture, setTexture] = useState(Texture.EMPTY);
   const [runTextures, setRunTextures] = useState([]);
+  const [attackTextures, setAttackTextures] = useState([]);
+
   const keysPressed = useRef(new Set());
 
   useEffect(() => {
@@ -39,6 +50,11 @@ export function MageCard() {
     Promise.all(runFramePaths.map((path) => Assets.load(path))).then(
       (textures) => {
         setRunTextures(textures);
+      },
+    );
+    Promise.all(attackFramePaths.map((path) => Assets.load(path))).then(
+      (textures) => {
+        setAttackTextures(textures);
       },
     );
 
@@ -55,28 +71,31 @@ export function MageCard() {
   useTick((ticker) => {
     if (!spriteRef.current) return;
     let isMoving = false;
+    let isAttacking = false;
     for (const key of keysPressed.current) {
       const action = keyActions[key];
-      if (key == 'a') {
-        spriteRef.current.scale.x = -1;
-      } else {
-        spriteRef.current.scale.x = 1;
-      }
-      
+      const attackAction = AttackKeyActions[key];
+
       if (action) {
         spriteRef.current.x += action.dx * ticker.deltaTime;
         spriteRef.current.y += action.dy * ticker.deltaTime;
+        spriteRef.current.scale.x = action.scaleX
+          ? action.scaleX
+          : spriteRef.current.scale.x;
         isMoving = true;
+      }
+      if (attackAction) {
+        isAttacking = true;
       }
     }
 
-    if (isMoving && runTextures.length > 0) {
+    if ((isMoving || isAttacking) && (runTextures.length > 0 || attackTextures.length > 0)) {
       elapsed.current += ticker.deltaTime;
       if (elapsed.current >= FRAME_DURATION) {
         elapsed.current = 0;
-        frameIndex.current = (frameIndex.current + 1) % runTextures.length;
+        frameIndex.current = (frameIndex.current + 1) % (isAttacking ? attackTextures.length : runTextures.length);
       }
-      spriteRef.current.texture = runTextures[frameIndex.current];
+      spriteRef.current.texture = isAttacking ? attackTextures[frameIndex.current] : runTextures[frameIndex.current];
     } else {
       elapsed.current = 0;
       frameIndex.current = 0;
