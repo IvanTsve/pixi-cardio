@@ -14,7 +14,9 @@ export default function IndexTable() {
         defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#fff' }}
     >
         <MageCard />
-        <Enemy />
+        {Array.from({ length: 10 }).map((_, index) => (
+            <Enemy key={index} />
+        ))}
      </Application>
     )
 }

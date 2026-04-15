@@ -57,6 +57,12 @@ export function MageCard() {
     let isMoving = false;
     for (const key of keysPressed.current) {
       const action = keyActions[key];
+      if (key == 'a') {
+        spriteRef.current.scale.x = -1;
+      } else {
+        spriteRef.current.scale.x = 1;
+      }
+      
       if (action) {
         spriteRef.current.x += action.dx * ticker.deltaTime;
         spriteRef.current.y += action.dy * ticker.deltaTime;

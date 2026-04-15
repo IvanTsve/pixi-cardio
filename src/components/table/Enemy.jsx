@@ -20,7 +20,7 @@ const walkFramePaths = Object.values(
 );
 const FRAME_DURATION = 8;
 const DIRECTION_CHANGE_INTERVAL = 120;
-const DIRECTIONS = ["d", "d", "d", "w"];
+const DIRECTIONS = ["a", "s", "d", "w"];
 
 export function Enemy() {
   const spriteRef = useRef(null);
@@ -44,6 +44,11 @@ export function Enemy() {
     }
 
     const action = keyActions[currentDirection.current];
+    if (currentDirection.current == 'a') {
+        spriteRef.current.scale.x = -1;
+      } else {
+        spriteRef.current.scale.x = 1;
+      }
     if (action) {
       spriteRef.current.x += action.dx * ticker.deltaTime;
       spriteRef.current.y += action.dy * ticker.deltaTime;
