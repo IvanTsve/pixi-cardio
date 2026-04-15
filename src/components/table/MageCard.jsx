@@ -29,16 +29,6 @@ export function MageCard() {
   const [texture, setTexture] = useState(Texture.EMPTY);
   const [runTextures, setRunTextures] = useState([]);
   const keysPressed = useRef(new Set());
-  function handleMovement(key) {
-    const action = keyActions[key];
-
-    if (!action) return;
-
-    return {
-      x: spriteRef.current.x + action.dx,
-      y: spriteRef.current.y + action.dy,
-    };
-  }
 
   useEffect(() => {
     if (texture === Texture.EMPTY) {
@@ -90,7 +80,6 @@ export function MageCard() {
 
   return (
     <pixiSprite
-      onKeyDown={(event) => handleMovement(event.key)}
       ref={spriteRef}
       anchor={0.5}
       eventMode={"static"}

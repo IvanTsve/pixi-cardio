@@ -3,6 +3,7 @@ import {
 } from '@pixi/react';
 
 import { MageCard } from './MageCard'
+import { Enemy } from './Enemy'
 
 export default function IndexTable() {
     return(
@@ -13,6 +14,7 @@ export default function IndexTable() {
         defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#fff' }}
     >
         <MageCard />
+        <Enemy />
      </Application>
     )
 }

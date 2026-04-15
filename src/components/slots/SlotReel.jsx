@@ -42,7 +42,6 @@ export default function SlotReel({ textures, posX, spinning }) {
                 symbolsRef.current.y = offsetRef.current;
 
                 const children = symbolsRef.current.children;
-                console.log(children, 'children');
                 
                 if (children.length > 0) {
                     const first = children[0];
