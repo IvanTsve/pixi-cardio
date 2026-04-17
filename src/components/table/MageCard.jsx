@@ -37,7 +37,7 @@ const fireBallFramePaths = Object.values(
 );
 const FRAME_DURATION = 8;
 
-export function MageCard() {
+export function MageCard({ TILE_SIZE,ROOM_MAP }) {
   const frameIndex = useRef(0);
   const elapsed = useRef(0);
   const spriteRef = useRef(null);
@@ -80,7 +80,14 @@ export function MageCard() {
       window.removeEventListener("keyup", onUp);
     };
   }, []);
-
+  function isWall(x, y) {
+    const col = Math.floor(x / TILE_SIZE);
+    const row = Math.floor(y / TILE_SIZE);
+    if (row < 0 || row >= ROOM_MAP.length || col < 0 || col >= ROOM_MAP[0].length) {
+      return true;
+    }
+    return ROOM_MAP[row][col] === 1;
+  }
   useTick((ticker) => {
     if (!spriteRef.current) return;
     let isMoving = false;
@@ -88,13 +95,20 @@ export function MageCard() {
     if (!isAttacking && fireBallSpriteRef.current) {
       fireBallSpriteRef.current.visible = false;
     }
+    
     for (const key of keysPressed.current) {
       const action = keyActions[key];
       const attackAction = AttackKeyActions[key];
 
       if (action) {
-        spriteRef.current.x += action.dx * ticker.deltaTime;
-        spriteRef.current.y += action.dy * ticker.deltaTime;
+        const nextX = spriteRef.current.x + action.dx * ticker.deltaTime;
+  const nextY = spriteRef.current.y + action.dy * ticker.deltaTime;
+  if (!isWall(nextX, spriteRef.current.y)) {
+    spriteRef.current.x = nextX;
+  }
+  if (!isWall(spriteRef.current.x, nextY)) {
+    spriteRef.current.y = nextY;
+  }
         spriteRef.current.scale.x = action.scaleX
           ? action.scaleX
           : spriteRef.current.scale.x;

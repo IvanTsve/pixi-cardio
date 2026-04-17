@@ -1,22 +1,55 @@
-import {
-    Application,
-} from '@pixi/react';
+import { Application, extend } from "@pixi/react";
+import { Graphics } from "pixi.js";
+extend({
+  Graphics,
+});
 
-import { MageCard } from './MageCard'
-import { Enemy } from './Enemy'
-
+import { MageCard } from "./MageCard";
+import { Enemy } from "./Enemy";
+const ROOM_MAP = [
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+  [1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1],
+  [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+  [1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1],
+  [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+const WALL_COLOR = 0x555555;
+const TILE_SIZE = 40;
 export default function IndexTable() {
-    return(
+  return (
     <Application
-        backgroundColor="gray"
-        width={800}
-        height={600}
-        defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#fff' }}
+      backgroundColor="gray"
+      width={800}
+      height={600}
+      defaultTextStyle={{ fontSize: 24, fontWeight: "bold", color: "#fff" }}
     >
-        <MageCard />
-        {Array.from({ length: 10 }).map((_, index) => (
-            <Enemy key={index} />
-        ))}
-     </Application>
-    )
+      <pixiGraphics
+        draw={(g) => {
+          g.clear();
+          for (let row = 0; row < ROOM_MAP.length; row++) {
+            for (let col = 0; col < ROOM_MAP[row].length; col++) {
+              if (ROOM_MAP[row][col] === 1) {
+                g.rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                g.fill(WALL_COLOR);
+              }
+            }
+          }
+        }}
+      />
+      <MageCard TILE_SIZE={TILE_SIZE} ROOM_MAP={ROOM_MAP}/>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <Enemy key={index} />
+      ))}
+    </Application>
+  );
 }
