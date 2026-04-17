@@ -37,7 +37,7 @@ const fireBallFramePaths = Object.values(
 );
 const FRAME_DURATION = 8;
 
-export function MageCard({ TILE_SIZE,ROOM_MAP }) {
+export function MageCard({ TILE_SIZE,ROOM_MAP, COLS, ROWS }) {
   const frameIndex = useRef(0);
   const elapsed = useRef(0);
   const spriteRef = useRef(null);
@@ -83,10 +83,10 @@ export function MageCard({ TILE_SIZE,ROOM_MAP }) {
   function isWall(x, y) {
     const col = Math.floor(x / TILE_SIZE);
     const row = Math.floor(y / TILE_SIZE);
-    if (row < 0 || row >= ROOM_MAP.length || col < 0 || col >= ROOM_MAP[0].length) {
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
       return true;
     }
-    return ROOM_MAP[row][col] === 1;
+    return ROOM_MAP[row * COLS + col] === 1;
   }
   useTick((ticker) => {
     if (!spriteRef.current) return;
