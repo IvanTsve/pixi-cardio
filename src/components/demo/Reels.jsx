@@ -6,7 +6,7 @@ extend({
     Container,
 });
 
-export default function Reels({ slotImages, colsIndex, SYMBOL_H, SYMBOL_W, VISIBLE_ROWS }) {
+export default function Reels({ slotImages, colsIndex, SYMBOL_H, SYMBOL_W, VISIBLE_ROWS, isSpinning }) {
     const symbolsRef = useRef(null);
     const maskRef = useRef(null);
 
