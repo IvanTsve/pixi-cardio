@@ -1,20 +1,64 @@
 import { Sprite, Container } from "pixi.js";
-import { extend } from '@pixi/react';
+import { extend, useTick } from '@pixi/react';
 import { useRef, useEffect } from 'react';
 extend({
     Sprite,
     Container,
 });
+const SYMBOL_H = 128;
+const SYMBOL_W = 128;
+const SPEED = 9;
+const GAP = 20;
+const VISIBLE_ROWS = 5;
+const STEP_Y = SYMBOL_H + GAP;
+const SYMBOL_STEP = SYMBOL_H + GAP;
 
-export default function Reels({ slotImages, colsIndex, SYMBOL_H, SYMBOL_W, VISIBLE_ROWS, isSpinning }) {
+export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS }) {
     const symbolsRef = useRef(null);
     const maskRef = useRef(null);
+    const offsetRef = useRef(0);
 
     useEffect(() => {
         if (symbolsRef.current && maskRef.current) {
             symbolsRef.current.mask = maskRef.current;
         }
     }, []);
+
+    useTick({
+        callback() {
+            console.log(isSpinning);
+
+            if (isSpinning) {
+                offsetRef.current += SPEED;
+                symbolsRef.current.y = offsetRef.current;
+
+                while (offsetRef.current > STEP_Y) {
+                    offsetRef.current -= STEP_Y;
+                    symbolsRef.current.y = offsetRef.current;
+
+                    const children = symbolsRef.current.children;
+
+                    if (!children.length) return;
+
+                    const first = children[0];
+                    symbolsRef.current.removeChild(first);
+                    symbolsRef.current.addChild(first);
+
+
+
+                    // first.texture = slotImages[Math.floor(Math.random() * slotImages.length)];
+
+                    symbolsRef.current.children.forEach((child, i) => {
+                        child.y = i * SYMBOL_STEP;
+                      });
+                }
+
+            }
+        },
+        isEnabled: isSpinning,
+    })
+
+
     return (
         <pixiContainer position={{ x: 100, y: 50 }}>
             <pixiGraphics ref={maskRef} key={'mask-' + colsIndex}
@@ -34,7 +78,7 @@ export default function Reels({ slotImages, colsIndex, SYMBOL_H, SYMBOL_W, VISIB
                             height={SYMBOL_H}
                             width={SYMBOL_W}
                             texture={el}
-                            position={{ x: colsIndex * 150, y: i * 150 }}
+                            position={{ x: colsIndex * 150, y: i * SYMBOL_STEP }}
                         />
                     )
 

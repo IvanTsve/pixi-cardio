@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import Reels from './Reels';
 
 const REELS_COLS = 4;
-const SYMBOL_H = 128;
-const SYMBOL_W = 128;
 const VISIBLE_ROWS = 4;
 
 export default function IndexDemo() {
@@ -36,7 +34,7 @@ export default function IndexDemo() {
     <Application width={800} height={700} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
        {
         Array.from({ length: REELS_COLS }).map((_, index) => (
-            <Reels key={index} slotImages={textures} colsIndex={index} SYMBOL_H={SYMBOL_H} SYMBOL_W={SYMBOL_W} VISIBLE_ROWS={VISIBLE_ROWS} isSpinning={isSpinning[index]} />
+            <Reels key={index} slotImages={textures} colsIndex={index} isSpinning={isSpinning[index]} VISIBLE_ROWS={VISIBLE_ROWS} />
         ))
        }
         <pixiText
