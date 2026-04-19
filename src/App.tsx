@@ -4,7 +4,7 @@ import IndexTable from './components/table/IndexTable'
 import IndexDemo from './components/demo/IndexDemo'
 
 export default function App() {
-    const [index, setIndex] = useState('table')
+    const [index, setIndex] = useState('slot')
     function change(val) {
         setIndex(val)
     }
