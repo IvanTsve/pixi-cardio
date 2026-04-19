@@ -24,10 +24,10 @@ export default function IndexDemo() {
     }, []);
     function handleSpinClick() {
         setIsSpinning(prev => [true, true, true, true]);
-        setTimeout(() => setIsSpinning(prev => [false, prev[1], prev[2], prev[3]]), 1500);
-        setTimeout(() => setIsSpinning(prev => [prev[0], false, prev[2], prev[3]]), 1900);
-        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], false, prev[3]]), 2300);
-        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], prev[2], false]), 2700);
+        setTimeout(() => setIsSpinning(prev => [false, prev[1], prev[2], prev[3]]), 3000);
+        setTimeout(() => setIsSpinning(prev => [prev[0], false, prev[2], prev[3]]), 3566);
+        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], false, prev[3]]), 4132);
+        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], prev[2], false]), 4700);
     }
 
     return (
