@@ -7,20 +7,16 @@ extend({
     Assets,
 });
 
-export default function Reels({ slotImages }) {
+export default function Reels({ slotImages, colsIndex }) {
     return (
-        <pixiContainer position={{ x: 300, y: 100 }}>
+        <pixiContainer position={{ x: 100, y: 50 }}>
             {
-                Array.from({ length: 4 }).map((_, i) => {
+                Object.values(slotImages).map((el, i) => {
                     return (
-                        <pixiGraphics
+                        <pixiSprite
                             key={i}
-                            position={{ x: i * 150, y: 0 }}
-                            draw={(g) => {
-                                g.clear();
-                                g.rect(-150, -35, 120, 400);
-                                g.stroke({ color: 0xffffff, alpha: 1 });
-                            }}
+                            texture={el}
+                            position={{ x: colsIndex * 150, y: i * 150 }}
                         />
                     )
 
