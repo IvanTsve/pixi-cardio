@@ -26,7 +26,12 @@ export default function IndexDemo() {
 
         Assets.load(slotImages).then((textures) => {
             if (setted) return;
-            const mapped = Object.values(textures).map(el => ({ id: uuidv4(), texture: el }));
+            const mapped = Object.values(textures).map(el => {
+                const id = uuidv4();
+                const match = el.label.match(/\/([^\/]+)\.png$/);
+                el['symbol'] = match ? match[1] : null;
+                return { id, texture: el }
+            });
             setTextures(mapped);
         });
         return () => {
