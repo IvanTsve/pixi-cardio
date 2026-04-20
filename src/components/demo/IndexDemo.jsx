@@ -23,7 +23,11 @@ export default function IndexDemo() {
     });
     }, []);
     function handleSpinClick() {
-        setIsSpinning(prev => [true, true, true, true]);
+        setTimeout(() => setIsSpinning(prev => [true, prev[1], prev[2], prev[3]]), 150);
+        setTimeout(() => setIsSpinning(prev => [prev[0], true, prev[2], prev[3]]), 300);
+        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], true, prev[3]]), 450);
+        setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], prev[2], true]), 600);
+
         setTimeout(() => setIsSpinning(prev => [false, prev[1], prev[2], prev[3]]), 3000);
         setTimeout(() => setIsSpinning(prev => [prev[0], false, prev[2], prev[3]]), 3566);
         setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], false, prev[3]]), 4132);
