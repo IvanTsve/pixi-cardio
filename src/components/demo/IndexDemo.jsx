@@ -22,7 +22,8 @@ export default function IndexDemo() {
 
     useEffect(() => {
         Assets.load(slotImages).then((textures) => {
-            setTextures(arr => [...arr, ...Object.values(textures).map(el => ({ id: uuidv4(), texture: el }))]);
+            const mapped = Object.values(textures).map(el => ({ id: uuidv4(), texture: el }));
+            setTextures(mapped);
         });
     }, []);
 
