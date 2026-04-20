@@ -44,6 +44,9 @@ export default function IndexDemo() {
     }
 
     function handleReelResult(cIndex, result) {
+        if (reelResult.length === REELS_COLS) {
+            setReelResult([]);
+        }
         setReelResult(prev => [...prev, { cIndex, result }]);
     }
 
