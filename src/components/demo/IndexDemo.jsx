@@ -33,6 +33,7 @@ export default function IndexDemo() {
         }
     }, [reelResult]);
     function handleSpinClick() {
+        setReelResult([]);
         setTimeout(() => setIsSpinning(prev => [true, prev[1], prev[2], prev[3]]), 150);
         setTimeout(() => setIsSpinning(prev => [prev[0], true, prev[2], prev[3]]), 300);
         setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], true, prev[3]]), 450);
@@ -45,9 +46,6 @@ export default function IndexDemo() {
     }
 
     function handleReelResult(cIndex, result) {
-        if (reelResult.length === REELS_COLS) {
-            setReelResult([]);
-        }
         setReelResult(prev => [...prev, { cIndex, result }]);
     }
 
