@@ -22,10 +22,16 @@ export default function IndexDemo() {
     );
 
     useEffect(() => {
+        let setted = false;
+
         Assets.load(slotImages).then((textures) => {
+            if (setted) return;
             const mapped = Object.values(textures).map(el => ({ id: uuidv4(), texture: el }));
             setTextures(mapped);
         });
+        return () => {
+            setted = true;
+        }
     }, []);
 
     useEffect(() => {
@@ -63,7 +69,7 @@ export default function IndexDemo() {
             }
 
             <pixiText
-                text= {winResult ? "You Win" : "You Lose"}
+                text={winResult ? "You Win" : "You Lose"}
                 visible={reelResult.length === REELS_COLS}
                 position={{ x: 300, y: 850 }}
                 eventMode="static"
