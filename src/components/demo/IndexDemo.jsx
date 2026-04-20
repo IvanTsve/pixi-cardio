@@ -11,7 +11,7 @@ const VISIBLE_ROWS = 4;
 export default function IndexDemo() {
     const [textures, setTextures] = useState([]);
     const [isSpinning, setIsSpinning] = useState([false, false, false, false]);
-    const [ reelResult, setReelResult] = useState([]);
+    const [reelResult, setReelResult] = useState([]);
 
     const slotImages = Object.values(
         import.meta.glob('../../assets/slots/*.png', {
@@ -46,7 +46,11 @@ export default function IndexDemo() {
     }
 
     function handleReelResult(cIndex, result) {
-        setReelResult(prev => [...prev, { cIndex, result }]);
+        setReelResult(prev => {
+            const results = [...prev];
+            results[cIndex] = result;
+            return results;
+        });
     }
 
     return (
