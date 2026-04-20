@@ -26,7 +26,6 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
 
     useTick({
         callback() {
-            console.log(isSpinning);
 
             if (isSpinning) {
                 offsetRef.current += SPEED;
