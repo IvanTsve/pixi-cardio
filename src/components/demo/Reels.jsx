@@ -19,9 +19,9 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
     const [symbols, setSymbols] = useState([]);
 
     useEffect(() => {
-        // if (symbolsRef.current && maskRef.current) {
-        //     symbolsRef.current.mask = maskRef.current;
-        // }
+        if (symbolsRef.current && maskRef.current) {
+            symbolsRef.current.mask = maskRef.current;
+        }
     }, []);
 
     useEffect(() => {
