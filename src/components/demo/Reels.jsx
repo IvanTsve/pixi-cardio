@@ -1,6 +1,6 @@
 import { Sprite, Container } from "pixi.js";
 import { extend, useTick } from '@pixi/react';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 extend({
     Sprite,
     Container,
@@ -9,7 +9,6 @@ const SYMBOL_H = 128;
 const SYMBOL_W = 128;
 const SPEED = 9;
 const GAP = 20;
-const VISIBLE_ROWS = 5;
 const STEP_Y = SYMBOL_H + GAP;
 const SYMBOL_STEP = SYMBOL_H + GAP;
 
@@ -17,12 +16,17 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
     const symbolsRef = useRef(null);
     const maskRef = useRef(null);
     const offsetRef = useRef(0);
+    const [symbols, setSymbols] = useState([]);
 
     useEffect(() => {
-        if (symbolsRef.current && maskRef.current) {
-            symbolsRef.current.mask = maskRef.current;
-        }
+        // if (symbolsRef.current && maskRef.current) {
+        //     symbolsRef.current.mask = maskRef.current;
+        // }
     }, []);
+
+    useEffect(() => {
+        setSymbols(slotImages);
+    }, [slotImages]);
 
     useTick({
         callback() {
@@ -39,17 +43,19 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
 
                     if (!children.length) return;
 
-                    const first = children[0];
-                    symbolsRef.current.removeChild(first);
-                    symbolsRef.current.addChild(first);
-
-
-
-                    // first.texture = slotImages[Math.floor(Math.random() * slotImages.length)];
-
-                    symbolsRef.current.children.forEach((child, i) => {
-                        child.y = i * SYMBOL_STEP;
-                      });
+                    setSymbols((prev) => {
+                        if (!prev.length) return prev;
+                        const [first, ...rest] = prev;
+                        const randomTexture =
+                            slotImages[Math.floor(Math.random() * slotImages.length)]?.texture ?? first.texture;
+                        return [
+                            ...rest,
+                            {
+                                ...first,
+                                texture: randomTexture,
+                            },
+                        ];
+                    });
                 }
 
             }
@@ -70,13 +76,13 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
             />
             <pixiContainer ref={symbolsRef} position={{ x: 0, y: 0 }}>
 
-                {Object.values(slotImages).map((el, i) => {
+                {symbols.map((el, i) => {
                     return (
                         <pixiSprite
-                            key={i}
+                            key={el.id}
                             height={SYMBOL_H}
                             width={SYMBOL_W}
-                            texture={el}
+                            texture={el.texture}
                             position={{ x: colsIndex * 150, y: i * SYMBOL_STEP }}
                         />
                     )
