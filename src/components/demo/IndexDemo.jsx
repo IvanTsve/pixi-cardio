@@ -2,6 +2,7 @@ import { Application } from '@pixi/react';
 import { Assets } from 'pixi.js';
 import { useEffect, useState } from 'react';
 import Reels from './Reels';
+import { v4 as uuidv4 } from "uuid";
 
 const REELS_COLS = 4;
 const VISIBLE_ROWS = 4;
@@ -19,7 +20,7 @@ export default function IndexDemo() {
 
     useEffect(() => {
     Assets.load(slotImages).then((textures) => {
-        setTextures(textures);
+        setTextures(arr => [...arr, ...Object.values(textures).map(el => ({ id: uuidv4(), texture: el }))]);
     });
     }, []);
     function handleSpinClick() {
@@ -35,7 +36,7 @@ export default function IndexDemo() {
     }
 
     return (
-    <Application width={800} height={700} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
+    <Application width={800} height={3700} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
        {
         Array.from({ length: REELS_COLS }).map((_, index) => (
             <Reels key={index} slotImages={textures} colsIndex={index} isSpinning={isSpinning[index]} VISIBLE_ROWS={VISIBLE_ROWS} />
