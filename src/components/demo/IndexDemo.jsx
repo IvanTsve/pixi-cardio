@@ -12,6 +12,7 @@ export default function IndexDemo() {
     const [textures, setTextures] = useState([]);
     const [isSpinning, setIsSpinning] = useState([false, false, false, false]);
     const [reelResult, setReelResult] = useState([]);
+    const [winResult, setWinResult] = useState(false);
 
     const slotImages = Object.values(
         import.meta.glob('../../assets/slots/*.png', {
@@ -60,6 +61,15 @@ export default function IndexDemo() {
                     <Reels key={index} slotImages={textures} colsIndex={index} isSpinning={isSpinning[index]} VISIBLE_ROWS={VISIBLE_ROWS} handleReelResult={handleReelResult} />
                 ))
             }
+
+            <pixiText
+                text= {winResult ? "You Win" : "You Lose"}
+                visible={reelResult.length === REELS_COLS}
+                position={{ x: 300, y: 850 }}
+                eventMode="static"
+                cursor="pointer"
+                style={{ fontSize: 24, fontWeight: 'bold', fill: '#fff' }}
+            />
             <pixiText
                 text="Play"
                 position={{ x: 300, y: 650 }}
