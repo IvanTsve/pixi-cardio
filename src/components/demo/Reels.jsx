@@ -12,11 +12,12 @@ const GAP = 20;
 const STEP_Y = SYMBOL_H + GAP;
 const SYMBOL_STEP = SYMBOL_H + GAP;
 
-export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS }) {
+export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS, handleReelResult }) {
     const symbolsRef = useRef(null);
     const maskRef = useRef(null);
     const offsetRef = useRef(0);
     const [symbols, setSymbols] = useState([]);
+    const prevIsSpinningRef = useRef(isSpinning);
 
     useEffect(() => {
         if (symbolsRef.current && maskRef.current) {
@@ -27,6 +28,13 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS 
     useEffect(() => {
         setSymbols(slotImages);
     }, [slotImages]);
+
+    useEffect(() => {
+        if (!isSpinning && prevIsSpinningRef.current) {
+            handleReelResult(colsIndex, symbols.slice(0, VISIBLE_ROWS));
+        }
+        prevIsSpinningRef.current = isSpinning;
+    }, [isSpinning]);
 
     useTick({
         callback() {
