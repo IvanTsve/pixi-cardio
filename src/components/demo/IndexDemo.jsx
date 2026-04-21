@@ -1,9 +1,10 @@
 import { Application } from '@pixi/react';
 import { Assets } from 'pixi.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Reels from './Reels';
 import { v4 as uuidv4 } from "uuid";
 import isWining from './isWining';
+import spinSoundSrc from '../../assets/sound/test.mp3';
 
 const REELS_COLS = 4;
 const VISIBLE_ROWS = 4;
@@ -54,6 +55,12 @@ export default function IndexDemo() {
     const [reelResult, setReelResult] = useState([]);
     const [spinState, setSpinState] = useState('idle');
     const [winResult, setWinResult] = useState([]);
+    const spinSoundRef = useRef(new Audio(spinSoundSrc));
+
+    useEffect(() => {
+        const spin = spinSoundRef.current;
+        spin.volume = 0.5;
+    }, []);
     const slotImages = Object.values(
         import.meta.glob('../../assets/slots/*.png', {
             eager: true,
@@ -90,6 +97,7 @@ export default function IndexDemo() {
         setReelResult([]);
         setWinResult([]);
         setSpinState('spinning');
+        spinSoundRef.current.play();
         setTimeout(() => setIsSpinning(prev => [true, prev[1], prev[2], prev[3]]), 150);
         setTimeout(() => setIsSpinning(prev => [prev[0], true, prev[2], prev[3]]), 300);
         setTimeout(() => setIsSpinning(prev => [prev[0], prev[1], true, prev[3]]), 450);
