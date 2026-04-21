@@ -53,7 +53,7 @@ export default function IndexDemo() {
     const [isSpinning, setIsSpinning] = useState([false, false, false, false]);
     const [reelResult, setReelResult] = useState([]);
     const [spinState, setSpinState] = useState('idle');
-
+    const [winResult, setWinResult] = useState([]);
     const slotImages = Object.values(
         import.meta.glob('../../assets/slots/*.png', {
             eager: true,
@@ -80,12 +80,14 @@ export default function IndexDemo() {
         if (reelResult.length === REELS_COLS) {
             const symbols = reelResult.map(col => col.map(el => el.texture.symbol));
             const isWin = isWining(symbols);
+            setWinResult(isWin);
             setSpinState(isWin ? 'win' : 'lose');
         }
     }, [reelResult]);
 
     function handleSpinClick() {
         setReelResult([]);
+        setWinResult([]);
         setSpinState('spinning');
         setTimeout(() => setIsSpinning(prev => [true, prev[1], prev[2], prev[3]]), 150);
         setTimeout(() => setIsSpinning(prev => [prev[0], true, prev[2], prev[3]]), 300);
@@ -111,7 +113,7 @@ export default function IndexDemo() {
         <Application width={800} height={800} defaultTextStyle={{ fontSize: 24, fontWeight: 'bold', color: '#000' }}>
             {
                 Array.from({ length: REELS_COLS }).map((_, index) => (
-                    <Reels key={index} slotImages={textures} colsIndex={index} isSpinning={isSpinning[index]} VISIBLE_ROWS={VISIBLE_ROWS} handleReelResult={handleReelResult} />
+                    <Reels key={index} slotImages={textures} colsIndex={index} isSpinning={isSpinning[index]} VISIBLE_ROWS={VISIBLE_ROWS} handleReelResult={handleReelResult} winResult={winResult} />
                 ))
             }
 
