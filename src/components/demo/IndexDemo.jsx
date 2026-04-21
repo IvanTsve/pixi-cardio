@@ -3,7 +3,7 @@ import { Assets } from 'pixi.js';
 import { useEffect, useState } from 'react';
 import Reels from './Reels';
 import { v4 as uuidv4 } from "uuid";
-import wins from './winTable';
+import isWining from './isWining';
 
 const REELS_COLS = 4;
 const VISIBLE_ROWS = 4;
@@ -41,7 +41,14 @@ export default function IndexDemo() {
 
     useEffect(() => {
         if (reelResult.length === REELS_COLS) {
-            console.log(reelResult);
+            let symbols = reelResult.map((el, cIndex) => el.map((el, rIndex) => {
+                //    console.log(el.texture.symbol);
+                    return el.texture.symbol;
+            }));
+            // console.log(symbols);
+
+            const isWin = isWining(symbols);
+            setWinResult(isWin);
         }
     }, [reelResult]);
     function handleSpinClick() {
