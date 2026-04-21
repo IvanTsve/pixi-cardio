@@ -12,7 +12,7 @@ const GAP = 20;
 const STEP_Y = SYMBOL_H + GAP;
 const SYMBOL_STEP = SYMBOL_H + GAP;
 
-export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS, handleReelResult }) {
+export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS, handleReelResult, winResult }) {
     const symbolsRef = useRef(null);
     const maskRef = useRef(null);
     const offsetRef = useRef(0);
@@ -35,6 +35,24 @@ export default function Reels({ slotImages, colsIndex, isSpinning, VISIBLE_ROWS,
         }
         prevIsSpinningRef.current = isSpinning;
     }, [isSpinning]);
+
+    useTick({
+        callback() {
+            const children = symbolsRef.current?.children;
+            if (!children?.length) return;
+            children.forEach((child, index) => {
+                if (winResult && winResult.some(w => w.elIndex == index && w.reelIndex == colsIndex)) {
+                    const pulse = 0.75 + 0.45 * Math.abs(Math.sin(performance.now() / 350));
+                    child.scale.x = pulse;
+                    child.scale.y = pulse;
+                } else {
+                    child.scale.x = 1;
+                    child.scale.y = 1;
+                }
+            });
+        },
+        isEnabled: !!(winResult && winResult.length > 0),
+    });
 
     useTick({
         callback() {
