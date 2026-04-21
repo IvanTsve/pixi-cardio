@@ -10,18 +10,21 @@ function isWining(reelResult) {
             for (let k = 0; k < elements.length; k++) {
                 const element = elements[k];
                 if (element == 1) {
-                    mappedResult.push(reelResult[jIndex][k]);
+                    mappedResult.push({
+                        elIndex: jIndex,
+                        reelIndex: k,
+                        symbol: reelResult[k][jIndex],
+                    });
                 }
             }
         }
-        let allSame = mappedResult.every(el => el === mappedResult[0]);
+        let allSame = mappedResult.every(el => el.symbol === mappedResult[0].symbol);
+        
+        // if (mappedResult.length > 0 && mappedResult[0].symbol == mappedResult[1].symbol) {
         if (mappedResult.length > 0 && allSame) {
-            return true;
+            return mappedResult;
         }
-    }    
-
-    return false;
-
+    }
+    return null;
 }
-
 export default isWining;
