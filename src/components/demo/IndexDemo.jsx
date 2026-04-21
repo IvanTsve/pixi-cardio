@@ -86,6 +86,7 @@ export default function IndexDemo() {
     }, [reelResult]);
 
     function handleSpinClick() {
+        if(isSpinning.some(Boolean)) return;
         setReelResult([]);
         setWinResult([]);
         setSpinState('spinning');
